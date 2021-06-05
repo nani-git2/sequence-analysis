@@ -3,9 +3,6 @@
 """
 Generate a sequence based on a hidden Markov model, and then predict the hidden sequence 
 based on the posterior probabilities of states.
-
-There is some amount of repetition of code, but I have kept it that way so that each 
-function can be run independently. A better way would be to use classes.
 """
 
 import random
