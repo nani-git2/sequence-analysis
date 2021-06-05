@@ -3,6 +3,9 @@
 """
 Needleman-Wunsch algorithm for aligning two sequences
 (Using scoring matrix BLOSUM62)
+
+https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm
+https://en.wikipedia.org/wiki/BLOSUM
 """
 
 import numpy as np
