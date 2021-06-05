@@ -3,6 +3,9 @@
 """
 Generate a sequence based on a hidden Markov model, and then use Viterbi
 algorithm to predict the hidden sequence.
+
+https://en.wikipedia.org/wiki/Viterbi_algorithm
+
 """
 
 import random
