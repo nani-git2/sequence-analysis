@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+'''
+Implementation of Unweighted Pair Group Method with Arithmetic mean (UPGMA) 
+wikipedia.org/wiki/UPGMA
+
+Given a distance matrix, generates a phylogenetic tree and returns a string in the Newick format.
+'''
+
 import numpy as np
 import pandas as pd
 import copy
@@ -16,7 +23,7 @@ class Node:
         self.leaves = leaves                # list containing all leaves under a node
         
         if len(self.children) == 0:
-            self.height = 0.0
+            self.downheight = 0.0
      
         
 
