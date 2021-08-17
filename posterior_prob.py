@@ -174,65 +174,67 @@ def posterior(S,T,a,e,x):
 
 ############### Output ###############
 
-#parameters
-S = ["H", "T"]                              # observables space
-T = [0, 1, 2]                               # state space
-e = np.array([(0.5, 0.5), (0.8, 0.2)])      #emission matrix
-a = np.array([(0, 0.5, 0.5), (0.01, 0.94, 0.05), (0.01, 0.05, 0.94)])   #transition matrix
-    
-
-# To generate and view the output. Set to True (or any number not 0) to execute this bit
-if True:
-    pi, x= gen_hmm(S,T,a,e)
-    predicted,F,prob_back=posterior(S,T,a,e,x)    
-    pi = pi[1:-1]    
-    hamming=sum([i!=j for i,j in zip(pi[1:-1],predicted)])/len(x)
-    pi=[str(i) for i in pi]
-    predicted=[str(i) for i in predicted]
-    
-    print("Sequence length : {}".format(len(pi)))
-    print("Observed sequence : "+"".join(x)+"\n")
-    print("Hidden : "+"".join(pi))
-    print("Predicted : "+"".join(predicted))
-    print("\n\nNormalized Hamming distance d= {}".format(hamming))
-    print("Forward P(x) = {} \nBackward P(x) = {}".format(F[-1], prob_back))
+if __name__ == "__main__":
+	
+	#parameters
+	S = ["H", "T"]                              # observables space
+	T = [0, 1, 2]                               # state space
+	e = np.array([(0.5, 0.5), (0.8, 0.2)])      #emission matrix
+	a = np.array([(0, 0.5, 0.5), (0.01, 0.94, 0.05), (0.01, 0.05, 0.94)])   #transition matrix
 
 
+	# To generate and view the output. Set to True (or any number not 0) to execute this bit
+	if True:
+	    pi, x= gen_hmm(S,T,a,e)
+	    predicted,F,prob_back=posterior(S,T,a,e,x)    
+	    pi = pi[1:-1]    
+	    hamming=sum([i!=j for i,j in zip(pi[1:-1],predicted)])/len(x)
+	    pi=[str(i) for i in pi]
+	    predicted=[str(i) for i in predicted]
 
-# to check the effect of switching rate. Set to True for executing this bit, 
-# and False (or 0) if not required. Also, leave out the bit of code above, if
-# this is to be run.
+	    print("Sequence length : {}".format(len(pi)))
+	    print("Observed sequence : "+"".join(x)+"\n")
+	    print("Hidden : "+"".join(pi))
+	    print("Predicted : "+"".join(predicted))
+	    print("\n\nNormalized Hamming distance d= {}".format(hamming))
+	    print("Forward P(x) = {} \nBackward P(x) = {}".format(F[-1], prob_back))
 
-if False:
-    prob_switch=[0.01, 0.05, 0.1, 0.3, 0.5, 0.7, 0.9]
-    result=np.zeros(len(prob_switch))
 
-    for i in range(len(prob_switch)):
-        a[1,2]=a[2,1]=prob_switch[i]
-        a[1,1]=a[2,2]=1-(prob_switch[i]+0.01)    
-        total=0
-        for j in range(30):
-            pi,x=gen_hmm(S,T,a,e)
-            F,forw=forward(S,T,a,e,x)
-            B,back,prob_back=backward(S,T,a,e,x)
-            pi=pi[1:-1]
-            posterior=np.zeros((len(T)-1,len(x)))
 
-            for k in range(len(T)-1):
-                posterior[k]=forw[k]*back[k]/prob_back
+	# to check the effect of switching rate. Set to True for executing this bit, 
+	# and False (or 0) if not required. Also, leave out the bit of code above, if
+	# this is to be run.
 
-            predicted=[]
-            for n in range(len(x)):
-                state=T[np.argmax(posterior[:,n])+1]
-                predicted.append(state)
-        
-            dist=(sum(m!=l for m,l in zip(pi,predicted)))/len(pi)
-            total+=dist
-        result[i]=total/30	       
+	if False:
+	    prob_switch=[0.01, 0.05, 0.1, 0.3, 0.5, 0.7, 0.9]
+	    result=np.zeros(len(prob_switch))
 
-    plt.plot(np.array(prob_switch), result)
-    plt.xlabel('Switching probability')
-    plt.ylabel('Normalized Hamming distance')
-    plt.grid(True)
-    plt.savefig('switch_posterior.png')
-    plt.show()
+	    for i in range(len(prob_switch)):
+		a[1,2]=a[2,1]=prob_switch[i]
+		a[1,1]=a[2,2]=1-(prob_switch[i]+0.01)    
+		total=0
+		for j in range(30):
+		    pi,x=gen_hmm(S,T,a,e)
+		    F,forw=forward(S,T,a,e,x)
+		    B,back,prob_back=backward(S,T,a,e,x)
+		    pi=pi[1:-1]
+		    posterior=np.zeros((len(T)-1,len(x)))
+
+		    for k in range(len(T)-1):
+			posterior[k]=forw[k]*back[k]/prob_back
+
+		    predicted=[]
+		    for n in range(len(x)):
+			state=T[np.argmax(posterior[:,n])+1]
+			predicted.append(state)
+
+		    dist=(sum(m!=l for m,l in zip(pi,predicted)))/len(pi)
+		    total+=dist
+		result[i]=total/30	       
+
+	    plt.plot(np.array(prob_switch), result)
+	    plt.xlabel('Switching probability')
+	    plt.ylabel('Normalized Hamming distance')
+	    plt.grid(True)
+	    plt.savefig('switch_posterior.png')
+	    plt.show()
