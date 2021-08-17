@@ -135,26 +135,27 @@ def nw_align(sequences,matrix,gap):
 	return dp_matrix[-1,-1],seq1,seq2,pointers,dp_matrix
 
 
+if __name__ == "__main__":
 
-#Test run. The file ubiquitin.fa contains the sequences (needs to be there in the same directory 
-#as the code). The aligned sequences and score etc. can be stored in a file if required.
+	#Test run. The file ubiquitin.fa contains the sequences (needs to be there in the same directory 
+	#as the code). The aligned sequences and score etc. can be stored in a file if required.
 
-a=1 		#set to 0 if the following run is to be tested. 
-if a==0:
-	lst=readfasta('ubiquitin.fa')
-	sequences=[lst[0][1],lst[1][1]]
-	matrix=blosum_reader('blosum62.txt')
-	gap=-4
-	
-	score,seq1,seq2=nw_align(sequences, matrix, gap)
-	print('The sequences being aligned are:\n {} and {}\n\n'.format(lst[0][0], lst[1][0]))
-	print('Aligned sequences are:\n \t{}\n\t{}\n\n The score is: {}'.format(seq1,seq2,score))
+	a=1 		#set to 0 if the following run is to be tested. 
+	if a==0:
+		lst=readfasta('ubiquitin.fa')
+		sequences=[lst[0][1],lst[1][1]]
+		matrix=blosum_reader('blosum62.txt')
+		gap=-4
+
+		score,seq1,seq2=nw_align(sequences, matrix, gap)
+		print('The sequences being aligned are:\n {} and {}\n\n'.format(lst[0][0], lst[1][0]))
+		print('Aligned sequences are:\n \t{}\n\t{}\n\n The score is: {}'.format(seq1,seq2,score))
 
 
-s1='lhkmqkrimp'.upper()		#input sequences
-s2='lyqrrlpp'.upper()
-sequences=[s1,s2]
-matrix=blosum_reader('blosum62.txt')	#scoring matrix
-gap=0
-score,seq1,seq2,pointer,dp_mat=nw_align(sequences,matrix,gap)
-print('Score : {} \n\n Alignment: \n{}\n{}'.format(score,seq2,seq1))
+	s1='lhkmqkrimp'.upper()		#input sequences
+	s2='lyqrrlpp'.upper()
+	sequences=[s1,s2]
+	matrix=blosum_reader('blosum62.txt')	#scoring matrix
+	gap=0
+	score,seq1,seq2,pointer,dp_mat=nw_align(sequences,matrix,gap)
+	print('Score : {} \n\n Alignment: \n{}\n{}'.format(score,seq2,seq1))
